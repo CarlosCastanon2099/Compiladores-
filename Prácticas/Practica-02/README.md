@@ -72,7 +72,7 @@ Ademas de que los ejemplos de jelly se encuentran en:
 ```Python
          _nnnn_                      
         dGGGGMMb     ,"""""""""""""""""""""""""""""""""""""""""".
-       @p~qp~~qMb    |  src/ejemplos/ |
+       @p~qp~~qMb    |               src/ejemplos/              |
        M|@||@) M|   _;..........................................'
        @,----.JM| -'
       JS^\__/  qKL
