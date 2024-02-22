@@ -1,0 +1,37 @@
+//Comentario 1
+
+main{
+    i:int = zzzz++
+    zzzz += 1
+    r:int = gdc(i,zzz)
+}
+
+{- Comentario 2
+   Comentario 2 -}
+
+
+gdc(var1:int, var2:int): int{
+    while var1 != 0 {
+        if (var1 < var2) var2 = var2 - var1
+        else var1 = var1 - var2
+    }
+    return b
+}
+
+sort(a:int []){
+    i:int = 0
+    n:int = length(a)
+
+    while i < n {
+        j:int = i
+        while j > 0 {
+            if a[j-1] > a [j] {
+                swap:int = a[j]
+                a[j] = a[j-1]
+                a[j-1] = swap
+            }
+            j--
+        }
+        i++
+    }
+}
