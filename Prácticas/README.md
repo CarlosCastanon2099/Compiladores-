@@ -7,10 +7,11 @@
 ###  <em> Practicas realizadas durante el curso: </em>
 </div>
 
-> -  Practica 01: <em> This :> Practica 01. </em>
-> -  Practica 02: <em> This :> Practica 02. </em>
+> -  Practica 01: <em> Hola-Racket Practica 01. </em>
+> -  Practica 02: <em> Analizador Lexico </em>
 > -  Practica 03: <em> This :> Practica 03. </em>
 > -  Practica 04: <em> This :> Practica 04. </em>
+> -  Practica 05: <em> This :> Practica 05. </em>
 
 
 
