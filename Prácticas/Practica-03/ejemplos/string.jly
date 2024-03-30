@@ -1,0 +1,7 @@
+yeah:string = "ave4"
+main{
+    ave_g4:string[] = {}
+    a:string = "pato"
+    b_2:string[] = {"ave", "ave2", "ave3", yeah}
+    dummyVar:bool
+}
