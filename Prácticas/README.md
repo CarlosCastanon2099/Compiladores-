@@ -9,10 +9,10 @@
 
 > -  Practica 01: <em> Hola-Racket </em>
 > -  Practica 02: <em> Analizador Lexico </em>
-> -  Practica 03: <em> This :> Practica 03. </em>
-> -  Practica 04: <em> This :> Practica 04. </em>
-> -  Practica 05: <em> This :> Practica 05. </em>
-
+> -  Practica 03: <em> Parser </em>
+> -  Practica 04: <em> Syntáxis Abstracta </em>
+> -  Practica 05: <em> Tabla de Símbolos </em>
+> -  Practica 06: <em> This :> Practica 06. </em>
 
 
 <div align="center">
