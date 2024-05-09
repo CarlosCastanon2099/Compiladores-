@@ -1,0 +1,11 @@
+resultado:bool = True // OwO
+
+main {
+    1+1
+    b:bool = impar(60)
+}
+// Funcion impar xd
+impar(num:int):bool{
+    if (num%2 ==0) {resultado = False}
+    return resultado
+}

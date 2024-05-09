@@ -1,0 +1,17 @@
+cadenta:string = "pato"
+numero:int = 99
+
+main{
+    algo:int = fact(numero)
+}
+// 😈 metodo
+fact(num:int):int{
+    algo:bool = True
+    resultado:int = 1
+    while (num > 1) {
+        resultado = resultado * num
+        if (1>1) {1+1 2+2}
+        num -= 1
+    }
+    return num < 0 ? (0-1) : resultado
+}
