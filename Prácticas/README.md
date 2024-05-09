@@ -12,7 +12,7 @@
 > -  Practica 03: <em> Parser </em>
 > -  Practica 04: <em> Syntáxis Abstracta </em>
 > -  Practica 05: <em> Tabla de Símbolos </em>
-> -  Practica 06: <em> This :> Practica 06. </em>
+> -  Practica 06: <em> Sistema de Tipos </em>
 
 
 <div align="center">
