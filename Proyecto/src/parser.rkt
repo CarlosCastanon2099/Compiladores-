@@ -29,7 +29,7 @@
 (define-struct cadena (c) #:transparent)
 (define-struct tipo (t) #:transparent)
 
-; version con 18 conflictos
+; version con 3 conflictos
 (define jelly-parser
     (parser
         [start programa]
@@ -82,7 +82,6 @@
             [parametros
                 [(declaracionnormal) (list $1)]
                 [(declaracionnormal COMA parametros) (list* $1 $3)]]
-            ; hasta aqui... abajo genera 3 conflictos
             [ifj
                 [(IF expresion OPENB CLOSEB) (ifj $2 empty empty)]
                 [(IF expresion OPENB lineas CLOSEB) (ifj $2 $4 empty)]
@@ -94,8 +93,11 @@
             [while
                 [(WHILE expresion OPENB CLOSEB) (while $2 empty)]
                 [(WHILE expresion OPENB lineas CLOSEB) (while $2 $4)]
+                #|
                 [(WHILE OPENP expresion CLOSEP OPENB CLOSEB) (while $3 empty)]
-                [(WHILE OPENP expresion CLOSEP OPENB lineas CLOSEB) (while $3 $6)]]
+                [(WHILE OPENP expresion CLOSEP OPENB lineas CLOSEB) (while $3 $6)]
+                |#
+                ]
             [lineas
                 [(linea) (list $1)]
                 [(linea lineas) (list* $1 $2)]]

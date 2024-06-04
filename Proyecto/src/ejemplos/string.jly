@@ -4,4 +4,5 @@ main{
     a:string = "pato"
     b_2:string[] = {"ave", "ave2", "ave3", yeah}
     dummyVar:bool
+    1+2
 }
