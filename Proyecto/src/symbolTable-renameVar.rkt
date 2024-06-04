@@ -1,7 +1,7 @@
 #lang nanopass
 (provide (all-defined-out))
 
-(require "syntaxtTree.rkt" "parser.rkt" "lexer.rkt")
+(require "syntaxtTree.rkt" "parser.rkt" "lexer.rkt" racket/hash )
 
 (define (identificador? i)
     (symbol? i))
@@ -190,38 +190,51 @@
 
 ; Asignar un nuevo nombre a las variables de un programa en un hash
 (define (asigna vars)
-        (let ([tabla (make-hash)])
-            (set-for-each vars (lambda (v) (hash-set! tabla v (nueva)))) ; version sin prints
-            #| version con prints
-            (set-for-each vars (lambda (v) (let ([varnueva (nueva)])
-                (begin
-                    (print v)
-                    (print " -> ")
-                    (print varnueva)
-                    (newline)
-                    (hash-set! tabla v varnueva)))))
-            |#
-            tabla))
+        (begin 
+            ;(set! c 0)
+            (let ([tabla (make-hash)])
+                (set-for-each vars (lambda (v) (hash-set! tabla v (nueva)))) ; version sin prints
+                #|; version con prints
+                (set-for-each vars (lambda (v) (let ([varnueva (nueva)])
+                    (begin
+                        (print v)
+                        (print " -> ")
+                        (print varnueva)
+                        (newline)
+                        (hash-set! tabla v varnueva)))))
+                |#
+                tabla)))
+            
 
 ; Metodo para renombrar las variables de un programa
 (define-pass ranme-var : jelly (ir) -> jelly ()
     (Programa : Programa (ir) -> Programa ()
         [((,ase* ...) ,m (,pc* ...))
-            (let* ([vars (vars-programa ir (mutable-set))]
-                [tabla (asigna vars)]
-                [ase*-1 (map (lambda (x) (AsigEspecial x tabla)) ase*)]
-                [m-1 (Main m tabla)]
-                [pc*-1 (map (lambda (x) (Proc x tabla)) pc*)])
-                `((,ase*-1 ...) ,m-1 (,pc*-1 ...)))]
+            (let* ([vars-glob (mutable-set)])
+                (map (lambda (x) (vars-asesp x vars-glob)) ase*)
+                (let* ([tabla (asigna vars-glob)]
+                    [ase*-1 (map (lambda (x) (AsigEspecial x tabla)) ase*)]
+                    [m-1 (Main m tabla)]
+                    [pc*-1 (map (lambda (x) (Proc x tabla)) pc*)])
+                    `((,ase*-1 ...) ,m-1 (,pc*-1 ...))))]
         [else (begin (print "caso else de ranme-var programa") ir)])
     (Main : Main (ir h) -> Main ()
         [(main (,ln* ...))
-            (let ([ln*-1 (map (lambda (x) (Linea x h)) ln*)])
+            (let* ([variables (vars-main ir (mutable-set))]
+                [tabla (asigna variables)]
+                [tabla2 (merge-hashes h tabla)]
+                [ln*-1 (map (lambda (x) (Linea x tabla2)) ln*)])
                 `(main (,ln*-1 ...)))]
         [else (begin (print "caso else de ranme-var main") ir)])
     (Proc : Proc (ir h) -> Proc ()
-        [,fnc (Funcion fnc h)]
-        [,mtd (Metodo mtd h)]
+        [,fnc (let* ([variables (vars-funcion ir (mutable-set))]
+                [tabla (asigna variables)]
+                [tabla2 (merge-hashes h tabla)])
+                `,(Funcion fnc tabla2))]
+        [,mtd (let* ([variables (vars-metodo ir (mutable-set))]
+                [tabla (asigna variables)]
+                [tabla2 (merge-hashes h tabla)])
+                `,(Metodo mtd tabla2))]
         [else (begin (print "caso else de ranme-var proc") ir)])
     (Funcion : Funcion (ir h) -> Funcion ()
         [(funcion ,i (,dec* ...) (,ln* ...))
@@ -306,6 +319,40 @@
                 `(,op ,e1-1 ,e2-1))]
         [else (begin (print "caso else de ranme-var expr") ir)]))
 
+#|
+; Metodo para unir hash tables
+(define (merge-hashes h tabla)
+    (let ([tabla2
+        (hash-union (make-immutable-hash (hash->list h))
+                    (make-immutable-hash (filter (lambda (pair)
+                                                (not (hash-has-key? tabla (car pair))))
+                                                (hash->list tabla))))])
+        tabla2))
+|#
+
+(define (merge-hashes h tabla)
+  (let* ([unique-tabla-pairs
+          (filter (lambda (pair)
+                    (not (hash-has-key? h (car pair))))
+                  (hash->list tabla))]
+         [tabla2
+          (hash-union (make-immutable-hash unique-tabla-pairs)
+                      (make-immutable-hash (hash->list h)))])
+    (begin
+    #|
+      (display "Tabla h: ")
+      (display h)
+      (newline)
+      (display "Tabla tabla: ")
+      (display tabla)
+      (newline)
+      (display "Tabla tabla2: ")
+      (display tabla2)
+      (newline)
+    |#
+      tabla2)))
+    
+
 ; Metodo para renombrar las variables de un programa archivo
 (define (ranme-var-archivo archivo)
     (let* ([arbol (arbolarch archivo)]
@@ -334,16 +381,30 @@
         [,mtd (symbol-table-metodo mtd st)]
         [else st]))
 
+; Metodo para obtener el tipo de los parametros de una funcion
+(define (tipo-parametros ir)
+    (nanopass-case (jelly Declaracion) ir
+        [(: ,i ,t) t]
+        [else '()]))
+
 ; Metodo para obtener la tabla de simbolos de una funcion
 (define (symbol-table-funcion ir st)
     (nanopass-case (jelly Funcion) ir
-        [(funcion ,i (,[symbol-table-declaracion : dec* st -> dec1] ...) (,[symbol-table-linea : ln* st -> ln1] ...)) st]
+        [(funcion ,i (,[symbol-table-declaracion : dec* st -> dec1] ...) (,[symbol-table-linea : ln* st -> ln1] ...))
+        (begin 
+            (let ([tipo (map tipo-parametros dec*)])
+                (hash-set! st i tipo))
+        st)]
         [else st]))
 
 ; Metodo para obtener la tabla de simbolos de un metodo
 (define (symbol-table-metodo ir st)
     (nanopass-case (jelly Metodo) ir
-        [(metodo ,i (,[symbol-table-declaracion : dec* st -> dec1] ...) ,t (,[symbol-table-linea : ln* st -> ln1] ...) ,[symbol-table-return : rtn st -> rtn1]) st]
+        [(metodo ,i (,[symbol-table-declaracion : dec* st -> dec1] ...) ,t (,[symbol-table-linea : ln* st -> ln1] ...) ,[symbol-table-return : rtn st -> rtn1])
+        (begin 
+            (let ([tipo (cons (map tipo-parametros dec*) t)])
+                (hash-set! st i tipo))
+            st)]
         [else st]))
 
 ; Metodo para obtener la tabla de simbolos de un return
@@ -453,7 +514,7 @@
 (display ejemplo2ren)
 (display "\n\n")
 (display "Tabla de simbolos renombrada\n")
-(define ejemplo3ren (symbol-table ejemplo2))
+(define ejemplo3ren (symbol-table-sin ejemplo2ren))
 (display ejemplo3ren)
 (display "\n\n")
 |#
