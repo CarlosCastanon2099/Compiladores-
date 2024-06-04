@@ -123,7 +123,8 @@
         ;;;;;;;;;;;;;;;;;;;;;;;
         ;; Errores
         ;;;;;;;;;;;;;;;;;;;;;;;
-        [(:or any-char) (error "Caracter no reconocido")])) ; Caracter no reconocido
+        [(:or any-char) (error "Caracter no reconocido " lexeme)])) ; Caracter no reconocido
+        ;[(:or any-char) (error "Caracter no reconocido")])) ; Caracter no reconocido
 
 ; Prueba
 ;(jelly-lex (open-input-string " // comentario \n @ 3 + 123"))

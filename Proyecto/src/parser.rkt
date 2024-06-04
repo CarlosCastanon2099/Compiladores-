@@ -107,6 +107,7 @@
                 [(linea) (list $1)]
                 [(linea lineas) (list* $1 $2)]]
             [linea
+                ; TODO: Agregar el for y tal vez el println
                 [(while) $1]
                 [(ifj) $1]
                 [(declaracion) $1]
@@ -177,7 +178,8 @@
             [longitud
                 [(LENGTH OPENP OPENB CLOSEB CLOSEP) (longitud (arreglo empty))]
                 [(LENGTH OPENP identificador CLOSEP) (longitud $3)]
-                [(LENGTH OPENP OPENB expresiones CLOSEB CLOSEP) (longitud (arreglo $4))]]
+                ;[(LENGTH OPENP OPENB expresiones CLOSEB CLOSEP) (longitud (arreglo $4))] ; causa problemas al traducir a java, ya que no se indica el tipo
+                ]
             [usoproc
                 [(identificador OPENP CLOSEP) (usoprocedimiento $1 empty)]
                 [(identificador OPENP expresiones CLOSEP) (usoprocedimiento $1 $3)]]

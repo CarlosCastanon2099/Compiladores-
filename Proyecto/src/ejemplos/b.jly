@@ -1,0 +1,46 @@
+numero:int = 99
+c:bool = True
+numerito:int[] = {1,2}
+
+main{
+    cadena:string = "pato"
+    aux:int = 77
+    aux = 78
+    z:int[]
+    p:int
+    p = 1
+    q:int = 0
+    q:int = 1
+    y:int[] = {1,2,3}
+    z:int[] = {1,2}
+    y:int[] = {1,4+1}
+    g:int = y[0]
+    fact(1, !True)
+    j:int = True ? 1 : 0
+    g = len(y)
+    cadena:string = "pato2"
+}
+// 😈 metodo
+fact(num:int, b:bool):int{
+    algo:int = 0
+    if (algo < 1) {
+        algo = 1+1
+    } else {
+        algo = 2+2
+    }
+    algo = 2+2
+    aux:int = 14
+    aux = 15
+    return numero
+}
+
+a(num:int){
+    while (num > 3) {
+        if (1 < 2) num = 3 - 1
+        else num = 4 - 1
+    }
+}
+
+d(){
+    if 1>2 {a:int = 2+2}
+}
