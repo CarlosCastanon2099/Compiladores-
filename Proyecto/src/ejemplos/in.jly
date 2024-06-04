@@ -17,11 +17,10 @@ gdc(var1:int, var2:int): int{
     }
     return b
 }
-
-sort(a:int []){
+sort(a:int[]){
     i:int = 0
-    n:int = length(a)
-
+    n:int = len(a)
+    
     while i < n {
         j:int = i
         while j > 0 {

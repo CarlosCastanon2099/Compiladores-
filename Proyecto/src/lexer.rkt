@@ -21,7 +21,6 @@
                              WHILE    ; palabra reservada while
                              RETURN   ; palabra reservada return
                              LENGTH   ; palabra reservada length
-                             DUMVAR   ; variable dummy
                              ADD      ; simbolo suma
                              SUBS     ; simbolo resta
                              MULTI    ; simbolo multiplicacion
@@ -71,8 +70,7 @@
         ["else"    (token-ELSE)] ; Condicional else
         ["while"   (token-WHILE)] ; Ciclo while
         ["return"  (token-RETURN)] ; Retorno
-        ["length"  (token-LENGTH)] ; Longitud de un arreglo
-        ["dummyVar" (token-DUMVAR)] ; Variable dummy
+        ["len"  (token-LENGTH)] ; Longitud de un arreglo
         ;;;;;;;;;;;;;;;;;;;;;;;
         ;; Simbolos operadores
         ;;;;;;;;;;;;;;;;;;;;;;;
@@ -113,7 +111,7 @@
         [(:: (char-range #\a #\z) (:* (:or alphabetic numeric #\_))) (token-IDEN lexeme)] ; Identificadores
         [(:+ (char-range #\0 #\9)) (token-NUM lexeme)] ; Numeros
         [(:or "True" "False") (token-BOOL lexeme)] ; Booleanos
-        [(:: #\" (complement (:: any-string "\"" any-string)) #\") (token-STRING lexeme)] ; Cadenas
+        [(:: #\" (complement (:: any-string #\" any-string)) #\") (token-STRING lexeme)] ; Cadenas
         ; [(:: "'" (complement (:: any-string "'" any-string)) "'") (token-STRING lexeme)] ; Cadenas
         ;;;;;;;;;;;;;;;;;;;;;;;
         ;; Comentarios, espacio en blanco y final de archivo
