@@ -37,14 +37,15 @@
         [tokens contenedores vacios]
         [error (lambda (valido? nombre valor) (raise-syntax-error 'error "Hubo un error de parseo con el token: " (if valor valor nombre)))]
         [precs
-            (nonassoc NOT OPENP CLOSEP OPENB CLOSEB); OPENRP CLOSERP)
+            (nonassoc NOT OPENP CLOSEP OPENB CLOSEB)
             (left AUTOINC AUTODEC)
             (left QUESM DDOT)
             (left OR)
             (left AND)
             (left EQ NEQ)
             (left GTEQ GT LTEQ LT)
-            (left ADD SUBS)
+            (left SUBS) ; cabmio: arreglo a la precedencia aritmetica
+            (left ADD)
             (left MULTI DIV MOD)
             (right ASG)
             (left ADDASG SUBSASG)]
@@ -58,11 +59,12 @@
                 [(asignaciones) (varglob $1)]]
             [asignaciones
                 [(asignacionespecial) (list $1)]
-                [(declaracionnormal) (list $1)]
+                ;[(declaracionnormal) (list $1)] ; cambio: arreglo para solo asignaciones en var glob
                 [(asignacionespecial asignaciones) (list* $1 $2)]
-                [(declaracionnormal asignaciones) (list* $1 $2)]]
+                ;[(declaracionnormal asignaciones) (list* $1 $2)] ; cambio: arreglo para solo asignaciones en var glob
+                ]
             [funcionmain
-                [(MAIN OPENB CLOSEB) (main empty)]
+                ;[(MAIN OPENB CLOSEB) (main empty)] ; cambio: quitar cosas con bloqueas vacios
                 [(MAIN OPENB lineas CLOSEB) (main $3)]]
             [procedimientos
                 [(metodo) (list $1)]
@@ -70,9 +72,9 @@
                 [(metodo procedimientos) (list* $1 $2)]
                 [(funcion procedimientos) (list* $1 $2)]]
             [funcion
-                [(identificador OPENP CLOSEP OPENB CLOSEB) (funcion $1 empty empty)]
+                ;[(identificador OPENP CLOSEP OPENB CLOSEB) (funcion $1 empty empty)] ; cambio: quitar cosas con bloqueas vacios
                 [(identificador OPENP CLOSEP OPENB lineas CLOSEB) (funcion $1 empty $5)]
-                [(identificador OPENP parametros CLOSEP OPENB CLOSEB) (funcion $1 $3 empty)]
+                ;[(identificador OPENP parametros CLOSEP OPENB CLOSEB) (funcion $1 $3 empty)] ; cambio: quitar cosas con bloqueas vacios
                 [(identificador OPENP parametros CLOSEP OPENB lineas CLOSEB) (funcion $1 $3 $6)]]
             [metodo
                 [(identificador OPENP CLOSEP DDOT tipo OPENB RETURN expresion CLOSEB) (metodo $1 empty $5 empty $8)]
@@ -83,17 +85,20 @@
                 [(declaracionnormal) (list $1)]
                 [(declaracionnormal COMA parametros) (list* $1 $3)]]
             [ifj
-                [(IF expresion OPENB CLOSEB) (ifj $2 empty empty)]
+                ;[(IF expresion OPENB CLOSEB) (ifj $2 empty empty)] ; cambio: quitar cosas con bloqueas vacios
                 [(IF expresion OPENB lineas CLOSEB) (ifj $2 $4 empty)]
-                [(IF OPENP expresion CLOSEP linea ELSE linea) (ifj $3 $5 $7)]
-                [(IF OPENP expresion CLOSEP OPENB CLOSEB ELSE OPENB CLOSEB) (ifj $3 empty empty)]
-                [(IF OPENP expresion CLOSEP OPENB CLOSEB ELSE OPENB lineas CLOSEB) (ifj $3 empty $9)]
-                [(IF OPENP expresion CLOSEP OPENB lineas CLOSEB ELSE OPENB CLOSEB) (ifj $3 $6 empty)]
-                [(IF OPENP expresion CLOSEP OPENB lineas CLOSEB ELSE OPENB lineas CLOSEB) (ifj $3 $6 $10)]]
+                ;[(IF OPENP expresion CLOSEP linea ELSE linea) (ifj $3 $5 $7)] ; cambio: original para arreglo de aceptar ( ) ???
+                [(IF expresion linea ELSE linea) (ifj $2 $3 $5)] ; cambio: modificacion para arreglo de aceptar ( ) ???
+                ;[(IF OPENP expresion CLOSEP OPENB CLOSEB ELSE OPENB CLOSEB) (ifj $3 empty empty)] ; cambio: quitar cosas con bloqueas vacios
+                ;[(IF OPENP expresion CLOSEP OPENB CLOSEB ELSE OPENB lineas CLOSEB) (ifj $3 empty $9)] ; cambio: quitar cosas con bloqueas vacios
+                ;[(IF OPENP expresion CLOSEP OPENB lineas CLOSEB ELSE OPENB CLOSEB) (ifj $3 $6 empty)] ; cambio: quitar cosas con bloqueas vacios
+                ;[(IF OPENP expresion CLOSEP OPENB lineas CLOSEB ELSE OPENB lineas CLOSEB) (ifj $3 $6 $10)] ; cambio: original para arreglo de aceptar ( ) ???
+                [(IF expresion OPENB lineas CLOSEB ELSE OPENB lineas CLOSEB) (ifj $2 $4 $8)] ; cambio: modificacion para arreglo de aceptar ( ) ???
+                ]
             [while
-                [(WHILE expresion OPENB CLOSEB) (while $2 empty)]
+                ;[(WHILE expresion OPENB CLOSEB) (while $2 empty)] ; cambio: quitar cosas con bloqueas vacios
                 [(WHILE expresion OPENB lineas CLOSEB) (while $2 $4)]
-                #|
+                #| cambio: modificacion para arreglo de aceptar ( ) ???
                 [(WHILE OPENP expresion CLOSEP OPENB CLOSEB) (while $3 empty)]
                 [(WHILE OPENP expresion CLOSEP OPENB lineas CLOSEB) (while $3 $6)]
                 |#
@@ -160,8 +165,8 @@
                 [(expresion GT expresion) (operacionbinaria '> $1 $3)]
                 [(expresion LTEQ expresion) (operacionbinaria '<= $1 $3)]
                 [(expresion LT expresion) (operacionbinaria '< $1 $3)]
-                [(expresion OR expresion) (operacionbinaria '|| $1 $3)]
-                [(expresion AND expresion) (operacionbinaria '&& $1 $3)]
+                [(expresion OR expresion) (operacionbinaria 'or $1 $3)]
+                [(expresion AND expresion) (operacionbinaria 'and $1 $3)]
                 [(expresion ADDASG expresion) (operacionbinaria '+= $1 $3)]
                 [(expresion SUBSASG expresion) (operacionbinaria '-= $1 $3)]
                 [(expresion ADD expresion) (operacionbinaria '+ $1 $3)]
@@ -210,3 +215,4 @@
 ;(parseaarch "ejemplos/string.jly")
 ;(parseaarch "ejemplos/in.jly")
 ;(parsea "main{i:int = 2 + 4 * 5zzzz += 1r:int = gdc(i,zzz)}")
+;(parseaarch "ejemplos/op.jly")
