@@ -16,7 +16,7 @@
 
 ----
 
-[Compilador-Jelly.webm](https://github.com/CarlosCastanon2099/Compiladores-/assets/108638686/831b197e-c8d0-4b6e-b81d-2a209beabeb2)
+[Compilador-Jelly.webm](https://github.com/CarlosCastanon2099/Compiladores-/assets/108638686/23f7cce5-c003-4aac-a164-477cf111df8a)
 
 
 ----
@@ -92,11 +92,11 @@ Linux  :
 Archivo original en Jelly:
 
 ```Java
-yeah:string = "ave4"
+yeah:string = "Choco"
 main{
     ave_g4:int[] = {1,3,4,5}
-    a:string = "pato"
-    b_2:string[] = {"ave", "ave2", "ave3", yeah}
+    a:string = "Batman"
+    b_2:string[] = {"gato", "Maximo", "Donna", yeah}
     dummyVar:bool
     println(a)
 }
@@ -106,9 +106,9 @@ Ejecucion:
 
 ```Python
 \src> chmod +x script.sh
-\src> ./script.sh ejemplos/string1.jly
- 4 shift/reduce conflicts
- Archivo generado: string1.java
+\src> ./script.sh ejemplos/string1.jly                          
+4 shift/reduce conflicts
+Archivo generado: String1.java
 ```
 
 Archivo generado en Java:
@@ -116,17 +116,18 @@ Archivo generado en Java:
 ```Java
 public class String1 {
 
-public static String variable_bonita_0 = "ave4";
+public static String variable_bonita_0 = "Choco";
 
 public static void main(String[] args) {
 int[] variable_bonita_2 = {1, 3, 4, 5};
-String variable_bonita_1 = "pato";
-String[] variable_bonita_3 = {"ave", "ave2", "ave3", variable_bonita_0};
+String variable_bonita_1 = "Batman";
+String[] variable_bonita_3 = {"gato", "Maximo", "Donna", variable_bonita_0};
 boolean variable_bonita_5;
 System.out.println(variable_bonita_1);
 }
 
 }
+
 ```
 
 ### **Ejemplo de uso 02:**
