@@ -16,6 +16,11 @@
 
 ----
 
+[Compilador-Jelly.webm](https://github.com/CarlosCastanon2099/Compiladores-/assets/108638686/831b197e-c8d0-4b6e-b81d-2a209beabeb2)
+
+
+----
+
 ## **En el presente proyecto implementamos:**
 
 ${\color{red}➣}$ Un proceso que traduce un árbol de sintaxis abstracta a código Java. 
@@ -63,6 +68,12 @@ Para hacer uso de lo implementado en el proyecto:
 - Ejecutamos desde `src/` los siguientes pasos:
 
 Linux  : 
+
+- Verificamos que tengamos instalado `nanopass`:
+
+```Python
+\proyecto-equipo_azul> raco pkg install nanopass
+```
 
 - Usamos el siguiente comando para brindar los permisos de ejecucion:
 
