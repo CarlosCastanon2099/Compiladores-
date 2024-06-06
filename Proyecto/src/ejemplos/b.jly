@@ -3,6 +3,9 @@ c:bool = True
 numerito:int[] = {1,2}
 
 main{
+    println("algo")
+    println(c)
+    println(1+3)
     cadena:string = "pato"
     aux:int = 77
     aux = 78

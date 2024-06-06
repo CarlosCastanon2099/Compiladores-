@@ -37,6 +37,7 @@
         ;[(declaracionmultiple tipo nombres) (string-append "(: [" (syntax-tree nombres) "] " (syntax-tree tipo) ")")]
         [(declaracionmultiple tipo nombres) (string-append (string-join (map (lambda (x) (string-append "(: " (syntax-tree x) " " (syntax-tree tipo) ")")) nombres) " "))]
         [(declaracion nombre tipo) (string-append "(: " (syntax-tree nombre) " " (syntax-tree tipo) ")")]
+        [(printj expresion) (string-append "(printjly " (syntax-tree expresion) ")")]
         [(ifj condicion lineasthen lineaselse) (string-append "(ifjly " (syntax-tree condicion) " {" (syntax-tree lineasthen) "} {" (syntax-tree lineaselse) "})")]
         [(while condicion lineas) (string-append "(whilejly " (syntax-tree condicion) " {" (syntax-tree lineas) "})")]
         [(metodo nombre parametros tipo lineas regreso) (string-append "(metodo " (syntax-tree nombre) " [" (syntax-tree parametros) "] " (syntax-tree tipo) " {" (syntax-tree lineas) "} (return " (syntax-tree regreso) "))")]

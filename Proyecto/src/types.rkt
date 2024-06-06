@@ -50,6 +50,8 @@
             (if (equal? t1 'bool) 'UNIT (error "Error en type-check-linea-while con " t1 " y bool"))]
         [(ifjly ,[type-check-expr : e st -> t1] (,[type-check-linea : ln1* st -> t2] ...) (,[type-check-linea : ln2* st -> t3] ...))
             (if (equal? t1 'bool) 'UNIT (error "Error en type-check-linea-if con " t1 " y bool"))]
+        [(printjly ,[type-check-expr : e st -> t1])
+            (if (or (equal? t1 'int) (equal? t1 'bool) (equal? t1 'string)) 'UNIT (error "Error en type-check-linea-print con " t1))]
         [,dec (type-check-declaracion dec st)]
         [,as (type-check-asignacion as st)]
         [,e (type-check-expr e st)]

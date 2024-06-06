@@ -51,6 +51,7 @@
     (Linea (ln)
         (whilejly e (ln* ...)) ; while expresion (linea* ...)
         (ifjly e (ln1* ...) (ln2* ...)) ; if expresion (linea* ...) (linea* ...)
+        (printjly e) ; print expresion
         dec ; declaracion
         e ; expresion
     )
@@ -128,6 +129,7 @@
     (nanopass-case (jelly Linea) ir
         [(whilejly ,[vars-expr : e vs -> e1] (,[vars-linea : ln* vs -> ln1] ...)) vs]
         [(ifjly ,[vars-expr : e vs -> e1] (,[vars-linea : ln1* vs -> ln3] ...) (,[vars-linea : ln2* vs -> ln4] ...)) vs]
+        [(printjly ,[vars-expr : e vs -> e1]) vs]
         [,dec (vars-declaracion dec vs)]
         [,as (vars-asignacion as vs)]
         [,e (vars-expr e vs)]
@@ -264,6 +266,9 @@
                 [ln2*-1 (map (lambda (x) (Linea x h)) ln2*)]
                 [e-1 (Expr e h)])
                 `(ifjly ,e-1 (,ln1*-1 ...) (,ln2*-1 ...)))]
+        [(printjly ,e)
+            (let ([e-1 (Expr e h)])
+                `(printjly ,e-1))]
         [,dec (Declaracion dec h)]
         [,as (Asignacion as h)]
         [,e (Expr e h)]
@@ -418,6 +423,7 @@
     (nanopass-case (jelly Linea) ir
         [(whilejly ,[symbol-table-expr : e st -> e1] (,[symbol-table-linea : ln* st -> ln1] ...)) st]
         [(ifjly ,[symbol-table-expr : e st -> e1] (,[symbol-table-linea : ln1* st -> ln3] ...) (,[symbol-table-linea : ln2* st -> ln4] ...)) st]
+        [(printjly ,[symbol-table-expr : e st -> e1]) st]
         [,dec (symbol-table-declaracion dec st)]
         [,as (symbol-table-asignacion as st)]
         [,e (symbol-table-expr e st)]

@@ -11,6 +11,7 @@
 (define-struct metodo (nombre parametros tipo lineas regreso) #:transparent)
 (define-struct while (condicion lineas) #:transparent)
 (define-struct ifj (condicion lineasthen lineaselse) #:transparent)
+(define-struct printj (expresion) #:transparent)
 (define-struct declaracion (nombre tipo) #:transparent)
 (define-struct declaracionmultiple (tipo nombres) #:transparent)
 (define-struct asignacion (nombre valor) #:transparent)
@@ -103,13 +104,15 @@
                 [(WHILE OPENP expresion CLOSEP OPENB lineas CLOSEB) (while $3 $6)]
                 |#
                 ]
+            [printj
+                [(PRINT OPENP expresion CLOSEP) (printj $3)]]
             [lineas
                 [(linea) (list $1)]
                 [(linea lineas) (list* $1 $2)]]
             [linea
-                ; TODO: Agregar el for y tal vez el println
                 [(while) $1]
                 [(ifj) $1]
+                [(printj) $1]
                 [(declaracion) $1]
                 [(asignacion) $1]
                 ; conflictos lo de abajo (si se quita OPENB expresion CLOSEB, se quitan los conflictos)
@@ -135,7 +138,7 @@
             [asignaciontipo
                 [(identificador DDOT tipo ASG expresion) (asignaciontipo $1 $3 $5)]]
             [asignacionarr
-                [(identificador DDOT tipo ASG OPENB CLOSEB) (asignaciontipo $1 $3 (arreglo empty))]
+                ;[(identificador DDOT tipo ASG OPENB CLOSEB) (asignaciontipo $1 $3 (arreglo empty))] ; cambio: quitar arreglos vacios
                 [(identificador DDOT tipo ASG OPENB expresiones CLOSEB) (asignaciontipo $1 $3 (arreglo $6))]]
             [asignacionmultiple
                 [(asignacionvarias ASG expresion) (asignacionmultiple $1 $3)]]
@@ -176,7 +179,7 @@
                 [(expresion DIV expresion) (operacionbinaria '/ $1 $3)]
                 [(expresion MOD expresion) (operacionbinaria '% $1 $3)]]
             [longitud
-                [(LENGTH OPENP OPENB CLOSEB CLOSEP) (longitud (arreglo empty))]
+                ;[(LENGTH OPENP OPENB CLOSEB CLOSEP) (longitud (arreglo empty))] ; cambio: quitar arreglos vacios
                 [(LENGTH OPENP identificador CLOSEP) (longitud $3)]
                 ;[(LENGTH OPENP OPENB expresiones CLOSEB CLOSEP) (longitud (arreglo $4))] ; causa problemas al traducir a java, ya que no se indica el tipo
                 ]

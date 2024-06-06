@@ -20,6 +20,7 @@
                              ELSE     ; palabra reservada else
                              WHILE    ; palabra reservada while
                              RETURN   ; palabra reservada return
+                             PRINT    ; palabra reservada print
                              LENGTH   ; palabra reservada length
                              ADD      ; simbolo suma
                              SUBS     ; simbolo resta
@@ -70,6 +71,7 @@
         ["else"    (token-ELSE)] ; Condicional else
         ["while"   (token-WHILE)] ; Ciclo while
         ["return"  (token-RETURN)] ; Retorno
+        ["println"   (token-PRINT)] ; Impresion
         ["len"  (token-LENGTH)] ; Longitud de un arreglo
         ;;;;;;;;;;;;;;;;;;;;;;;
         ;; Simbolos operadores

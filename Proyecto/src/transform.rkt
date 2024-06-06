@@ -82,6 +82,8 @@
             (string-append "while (" e1 ") {\n" (lista-str-todo l1 ";\n") "}")]
         [(ifjly ,[traducir-expr : e -> e1] (,[traducir-linea : ln1* -> l3] ...) (,[traducir-linea : ln2* -> l4] ...))
             (string-append "if (" e1 ") {\n" (lista-str-todo l3 ";\n") "} else {\n" (lista-str-todo l4 ";\n") "}")]
+        [(printjly ,[traducir-expr : e -> e1])
+            (string-append "System.out.println(" e1 ")")]
         [,dec (traducir-declaracion dec)]
         [,as (traducir-asignacion as)]
         [,e (traducir-expr e)]
@@ -263,13 +265,14 @@
 ;(display prueba4)
 ; guardar en archivo de salida, si el archivo no existe lo crea y si ya existe lo borra y crea uno nuevo
 (call-with-output-file (string-append nombre ".java")
-  (lambda (out)
-    (display prueba4 out))
-  #:exists 'replace)
+    (lambda (out)
+        (display prueba4 out))
+    #:exists 'replace)
 |#
 
 ; Compilar archivo
 (define (compilar-archivo nombre)
+    (validar-archivo nombre)
     (define nuevo-nombre (quitar-terminacion (primera-letra-mayuscula (quitar-antes-diagonal nombre))))
     (define prueba (ranme-var-archivo nombre))
     (define prueba2 (symbol-table-sin prueba))
@@ -303,6 +306,12 @@
         (if (= pos -1)
             str
             (substring str (+ pos 1)))))
+
+; Metodo para revisar si la extension del archivo es .jly
+(define (validar-archivo nombre)
+    (if (string=? (substring nombre (- (string-length nombre) 4)) ".jly")
+        #t
+        (error 'validar-archivo "El archivo no tiene la extension .jly")))
 
 ; Pruebas 2
 ;(compilar-archivo "ejemplos/dos.jly")
