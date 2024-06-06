@@ -72,7 +72,7 @@ Linux  :
 - Verificamos que tengamos instalado `nanopass`:
 
 ```Python
-\proyecto-equipo_azul> raco pkg install nanopass
+\src> raco pkg install nanopass
 ```
 
 - Usamos el siguiente comando para brindar los permisos de ejecucion:
