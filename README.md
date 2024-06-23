@@ -11,6 +11,7 @@ https://www.youtube.com/watch?v=dQw4w9WgXcQ
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
+[![GNU General Public License v3.0][license-shield]][license-url]
 
 #   ⚙️ Compiladores 💻
 
@@ -50,7 +51,7 @@ Fausto David Hernández Jasso ~ 	Juan Pablo Yamamoto Zazueta ~ Juan Alfonso Gard
 [issues-shield]: https://img.shields.io/github/issues/CarlosCastanon2099/Compiladores-.svg?style=for-the-badge
 [issues-url]: https://github.com/CarlosCastanon2099/Compiladores-/issues
 [license-shield]: https://img.shields.io/github/license/CarlosCastanon2099/Compiladores-.svg?style=for-the-badge
-[license-url]: https://github.com/CarlosCastanon2099/Compiladores-/blob/master/LICENSE.txt
+[license-url]: https://github.com/CarlosCastanon2099/Compiladores-/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
